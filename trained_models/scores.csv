@@ -1,0 +1,2 @@
+,estimator,mean_test_accuracy,mean_test_recall,mean_test_f1_score
+0,"LogisticRegression(C=0.001, max_iter=10000, tol=0.1)",0.9326611849274128,0.8929197552956244,0.9232507328333912
