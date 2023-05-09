@@ -7,40 +7,62 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 
-
+# Set path
 train_path = 'input\\train_file.xlsx'
 test_path = 'input\\test_file.xlsx'
 model_path = 'trained_models\\'
 output_path = 'output\\'
 
-numerical_columns = ['age', 'duration', 'campaign', 'previous']
-columns_to_clean = ['loan', 'housing', 'marital']
-new_numerical_columns = []
+# List numerical columns
+numerical_columns = ['age',
+                     'duration',
+                     'campaign',
+                     'previous'
+                     ]
 
+# List columns to be cleaned
+columns_to_clean = ['loan',
+                    'housing',
+                    'marital'
+                    ]
+
+# Set balancing strategy
 balancing = 'smote'
 
-pipeline = Pipeline([
+# Set pipeline for grid-search
+train_pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('pca', PCA()),
     ('clf', LogisticRegression()),
 ])
+
+# Set parameters for grid-search
 parameters = [
     {
-        'clf': (LogisticRegression(max_iter=10000, tol=0.1),),
+        'clf': (LogisticRegression(max_iter=10000,
+                                   tol=0.1),
+                ),
         'clf__C': (0.001,0.01,0.1,1,10,100),
         'pca__n_components': [5, 15],
     }, {
-        'clf': (RandomForestClassifier(),),
+        'clf': (RandomForestClassifier(),
+                ),
         'clf__n_estimators': (16, 32),
         'pca__n_components': [5, 15],
     }, {
-        'clf': (GradientBoostingClassifier(),),
+        'clf': (GradientBoostingClassifier(),
+                ),
         'clf__n_estimators': (16, 32),
         'clf__learning_rate': (0.8, 1.0),
         'pca__n_components': [5, 15],
     }, {
-        'clf': (MLPClassifier(solver='lbfgs', learning_rate='adaptive', random_state=0),),
-        'clf__hidden_layer_sizes': ((32,16,2),(64,32,16,2)),
+        'clf': (MLPClassifier(solver='lbfgs',
+                              learning_rate='adaptive',
+                              random_state=0),
+                ),
+        'clf__hidden_layer_sizes': ((32, 16, 2),
+                                    (64, 32, 16, 2)
+                                    ),
         'pca__n_components': [5, 15],
     }
 ]
