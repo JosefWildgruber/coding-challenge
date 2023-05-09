@@ -1,17 +1,20 @@
 from functions import *
 from config import *
 
-data = pd.read_excel(f'{input_path}train_file.xlsx')
+data = pd.read_excel(train_path)
 
-data_drop = drop_unknown(data, columns_to_clean)
-data_clean = make_numeric(data_drop, new_numerical_columns)
+#data_drop = drop_unknown(data, columns_to_clean)
+data_clean = make_numeric(data)
 
 X_raw = data_clean.drop(['y'], axis=1)
 
-numerical_features = X_raw[numerical_columns + new_numerical_columns]
-categorical_features = X_raw.drop(numerical_columns + new_numerical_columns, axis=1)
+numerical_features = X_raw[numerical_columns]
+categorical_features = X_raw.drop(numerical_columns, axis=1)
 
-generate_column_plots(data_clean)
+x = data_clean[numerical_columns].describe()
+#x.to_csv('graphics\\stats.csv')
+y = data_clean['y'].value_counts()
+#generate_column_plots(data_clean)
 
 new_numerical_features = pd.get_dummies(categorical_features)
 

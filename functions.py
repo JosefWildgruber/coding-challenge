@@ -114,13 +114,13 @@ def drop_unknown(df, new_num):
         return df
 
 
-def make_numeric(df, new_num, train=True):
+def make_numeric(df, train=True):
     if train:
         df['y'].mask(df['y'] == 'yes', 1, inplace=True)
         df['y'].mask(df['y'] == 'no', 0, inplace=True)
-    for col in new_num:
-        df[col].mask(df[col] == 'yes', 1, inplace=True)
-        df[col].mask(df[col] == 'no', 0, inplace=True)
+    #for col in new_num:
+    #    df[col].mask(df[col] == 'yes', 1, inplace=True)
+    #    df[col].mask(df[col] == 'no', 0, inplace=True)
     return df
 
 

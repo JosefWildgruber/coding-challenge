@@ -34,7 +34,7 @@ class TermDepositClassifier:
             df_temp = df_temp[(df_temp[col] == 'unknown')]
             percentage_lost += len(df_temp) / len(self.data)
         print(f'Percentage lost = {percentage_lost}')
-        if percentage_lost <= 0.05:
+        if percentage_lost <= 0.10:
             for col in col_to_clean:
                 data = data[(data[col] != 'unknown')]
         return data
@@ -133,7 +133,7 @@ class TermDepositClassifier:
         return results
 
     def fit(self, cv=3, n_jobs=3, verbose=1, scoring=None, refit=False):
-        self.data = self._drop_unknown(data=self.data, col_to_clean=columns_to_clean)
+        self.data = self._drop_unknown(data=self.data, col_to_clean=columns_to_clean).reset_index(drop=True)
         print('Dropping unknowns: Done')
         self.data = self._make_numeric(data=self.data)
         print('Make binary target: Done')
@@ -144,7 +144,7 @@ class TermDepositClassifier:
         print('Create One-Hot Encodings: Done')
         pd.DataFrame({'Columns': self.X_train.columns}).to_csv(f'{model_path}expected_columns.csv')
         print('Save list of expected columns: Done')
-        self.X_train, self.y_train = self._balance_dataset(X=self.X_train, y=self.y_train, mode='smote')
+        #self.X_train, self.y_train = self._balance_dataset(X=self.X_train, y=self.y_train, mode='smote')
         print("Running GridSearchCV")
         gs = GridSearchCV(self.pipeline, self.params, cv=cv, n_jobs=n_jobs,
                           verbose=verbose, scoring=scoring, refit=refit,
@@ -155,7 +155,7 @@ class TermDepositClassifier:
         self.grid_searches = gs
 
     def predict(self):
-        self.data = self._drop_unknown(data=self.data, col_to_clean=columns_to_clean)
+        self.data = self._drop_unknown(data=self.data, col_to_clean=columns_to_clean).reset_index(drop=True)
         print('Dropping unknowns: Done')
         self.X_test = self.data
         self.X_test = self._get_dummies(X=self.X_test, numerical_columns=self.numerical_columns)
@@ -164,7 +164,7 @@ class TermDepositClassifier:
         print('Add missing features: Done')
         self.prediction_results = self.pipeline.predict(self.X_test)
         self.prediction_results = self._add_labels(results=self.prediction_results)
-        self.prediction_results = pd.concat([self.X_test, self.prediction_results], axis=1)
+        self.prediction_results = pd.concat([self.data, self.prediction_results], axis=1)
         print('Create final results: Done')
 
     def get_score(self):
