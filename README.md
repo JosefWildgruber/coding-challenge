@@ -28,6 +28,6 @@ Running eda.py will create all graphics used in my documentation and save them t
 python eda.py
 
 
-#Documentation
+# Documentation
 
 Please find the documentation of my approach to solve this challenge in doc/challenge_doc.pdf
