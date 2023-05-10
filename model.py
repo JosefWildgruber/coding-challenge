@@ -1,4 +1,5 @@
 from sklearn.model_selection import GridSearchCV
+from imblearn.over_sampling import SMOTE
 
 from functions import *
 from config import *
@@ -68,10 +69,10 @@ class TermDepositClassifier:
                  y: pd.DataFrame, Balanced targets for classification
         """
         if mode == "smote":
-            X, y = balance_with_smote(X, y)
+            X, y = self._balance_with_smote(X, y)
         elif mode == "duplicates":
             df = pd.concat([X, y], axis=1)
-            df = balance_with_duplicates(df)
+            df = self._balance_with_duplicates(df)
             X = df.drop("y", axis=1)
             y = df[["y"]]
         else:

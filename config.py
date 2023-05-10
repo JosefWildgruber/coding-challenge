@@ -18,13 +18,10 @@ output_path = "output\\"
 numerical_columns = ["age", "duration", "campaign", "previous"]
 
 # List columns to be cleaned
-columns_to_clean = [  #'loan',
-    #'housing',
-    #'marital',
-    #'job',
-    #'education',
-    #'default'
-]
+columns_to_clean = ['loan',
+                    'housing',
+                    'marital'
+                    ]
 
 # Set balancing strategy
 balancing = "smote"
